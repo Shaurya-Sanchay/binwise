@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Think wise, BinWise!</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0 0;
+    }
+    nav ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .bin {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    .bin.full {
+      background: #e74c3c;
+      color: white;
+    }
+    .bin.empty {
+      background: #27ae60;
+      color: white;
+    }
+    .bin-title {
+      font-weight: bold;
+    }
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Navigation -->
+  <header>
+    <h1>Think wise, BinWise!</h1>
+    <p>Real-time bin status information for smarter waste management</p>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Bin Status Dashboard</a></li>
+        <li><a href="feedback.html">Feedback</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content: Dynamic Bin Status Dashboard -->
+  <div class="container">
+    <h2>Bin Status Dashboard</h2>
+    <div id="binContainer">
+      <!-- Bin statuses will be dynamically inserted here -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 BinWise</p>
+  </footer>
+
+  <!-- JavaScript for Dynamic Updates -->
+  <script>
+    // Simulated bin data (in a real system, this data could be fetched via an API)
+    const bins = [
+      { id: 1, type: 'Metallic', status: 'empty', fillLevel: 20 },
+      { id: 2, type: 'Wet',      status: 'full',  fillLevel: 95 },
+      { id: 3, type: 'Dry',      status: 'empty', fillLevel: 10 },
+      { id: 4, type: 'Metallic', status: 'full',  fillLevel: 100 },
+      { id: 5, type: 'Wet',      status: 'empty', fillLevel: 30 }
+    ];
+
+    // Function to update the bin status display
+    function updateBinStatus() {
+      const container = document.getElementById('binContainer');
+      container.innerHTML = ''; // Clear previous entries
+
+      bins.forEach(bin => {
+        const binDiv = document.createElement('div');
+        binDiv.classList.add('bin');
+        binDiv.classList.add(bin.status); // adds either "full" or "empty"
+        binDiv.innerHTML = `<span class="bin-title">Bin ${bin.id} (${bin.type}):</span> ${bin.status.toUpperCase()} - Fill Level: ${bin.fillLevel}%`;
+        container.appendChild(binDiv);
+      });
+    }
+
+    // Initial display update
+    updateBinStatus();
+
+    // Simulate real-time updates every 10 seconds
+    setInterval(() => {
+      bins.forEach(bin => {
+        // Increase fill level by a random value between 0 and 10%
+        bin.fillLevel += Math.floor(Math.random() * 11);
+        if (bin.fillLevel >= 100) {
+          // Simulate a collection event (bin emptied) when it reaches or exceeds 100%
+          bin.fillLevel = 0;
+          bin.status = 'empty';
+        } else if (bin.fillLevel >= 75) {
+          bin.status = 'full';
+        } else {
+          bin.status = 'empty';
+        }
+      });
+      updateBinStatus();
+    }, 10000);
+  </script>
+</body>
+</html>
